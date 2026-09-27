@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * Swarm Sentinel HTTP bridge entry point (plain HTTP/JSON — no MCP, no LangGraph).
+ * Swarm Sentinel HTTP bridge entry point (plain HTTP/JSON - no MCP, no LangGraph).
  *
  *   swarm-sentinel-bridge --token <t> --engine <module>   custom DecisionEngine (zero JEV calls)
  *   swarm-sentinel-bridge --token <t> [--live|--simulation|--offline]   JEV as the BYOK substrate
  *
  *   --engine <module>   module default-exporting a DecisionEngine (or exporting createEngine())
- *   --host <addr>       bind address (default 127.0.0.1 — loopback; expose deliberately)
+ *   --host <addr>       bind address (default 127.0.0.1 - loopback; expose deliberately)
  *   --port <n>          bind port (default 8788)
  *   --token <t>         bearer token, repeatable (or SENTINEL_BRIDGE_TOKENS=t1,t2)
  *   --board <path>      presence board file
@@ -60,7 +60,7 @@ let engine: DecisionEngine;
 const engineModule = flags.engine ?? process.env.SWARM_SENTINEL_ENGINE;
 if (engineModule) {
   // Plugin boundary: the engine module is a user-supplied runtime path (`--engine`), so no static
-  // import can name it — this is the one place a dynamic import is the only option.
+  // import can name it - this is the one place a dynamic import is the only option.
   let loaded: Record<string, unknown>;
   try {
     loaded = await import(pathToFileURL(path.resolve(engineModule)).href);

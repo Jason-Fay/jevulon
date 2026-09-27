@@ -21,7 +21,7 @@ export const LICENSE_TIERS: readonly LicenseTier[] = ["free", "pro", "team", "en
 /** Everything a license asserts. `exp`/`iat` are epoch milliseconds. */
 export interface LicenseClaims {
   v: 1;
-  /** Licensee label — the tenant slug or buyer reference shown in the activation mail. */
+  /** Licensee label - the tenant slug or buyer reference shown in the activation mail. */
   sub: string;
   tier: LicenseTier;
   /** Features this seat bought, e.g. `["sieve"]`. Enforcement keys off features, not tiers. */
@@ -61,7 +61,7 @@ export const LICENSE_PUBLIC_KEY_PEM = [
 ].join("\n");
 
 export interface VerifyLicenseOptions {
-  /** Alternate verifying key — key rotation and tests; defaults to the embedded issuing key. */
+  /** Alternate verifying key - key rotation and tests; defaults to the embedded issuing key. */
   publicKeyPem?: string;
   /** Evaluation clock in epoch milliseconds; defaults to now. */
   now?: number;
@@ -108,7 +108,7 @@ export function mintLicense(claims: LicenseClaims, signingKeyPem: string): strin
 export function verifyLicense(token: string | undefined | null, options: VerifyLicenseOptions = {}): LicenseClaims {
   const raw = token?.trim();
   if (!raw) {
-    throw new LicenseError("missing", "no license token found — set JVII_TOKEN to your JEVULON VII license token");
+    throw new LicenseError("missing", "no license token found - set JVII_TOKEN to your JEVULON VII license token");
   }
   const parts = raw.split(".");
   if (parts.length !== 3 || `${parts[0]}.` !== LICENSE_TOKEN_PREFIX) {

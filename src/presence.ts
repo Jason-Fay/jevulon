@@ -9,7 +9,7 @@
  * Storage: one JSON document under the repository's git common dir (`<common>/swarm-sentinel/board.json`)
  * so every worktree of one project shares it; falls back to `<cwd>/.swarm-sentinel/board.json` outside a
  * repository. The bytes live behind the `StateStore` seam (`src/state-store.ts`): cross-process-locked
- * JSON (default) or SQLite, selected by `SWARM_SENTINEL_STATE_STORE=file|sqlite`. One writer at a time —
+ * JSON (default) or SQLite, selected by `SWARM_SENTINEL_STATE_STORE=file|sqlite`. One writer at a time  - 
  * and a writer that crashes cannot wedge the board: the file lock expires and is taken over, SQLite
  * rolls the half-written transaction back. No call site changes with the store.
  */
@@ -22,7 +22,7 @@ import type { StateStore } from "./state-store.js";
 
 /**
  * Object.prototype reach-through names: never acceptable as caller-supplied keys in a board map.
- * `"__proto__"` is computed on purpose — a literal `__proto__:` entry would set the prototype instead of
+ * `"__proto__"` is computed on purpose - a literal `__proto__:` entry would set the prototype instead of
  * defining the plain own key this table needs. `boolean` (not `true`) because TypeScript widens the
  * literal at the `constructor` key against a literal-valued index signature.
  */
@@ -34,7 +34,7 @@ export class UnsafeBoardKeyError extends Error {
     public readonly kind: string,
     public readonly key: string
   ) {
-    super(`Unsafe board ${kind} "${key}" — "__proto__", "constructor" and "prototype" are rejected.`);
+    super(`Unsafe board ${kind} "${key}" - "__proto__", "constructor" and "prototype" are rejected.`);
     this.name = "UnsafeBoardKeyError";
   }
 }
@@ -69,7 +69,7 @@ export interface AgentRecord {
   pid: number;
   startedAt: number;
   heartbeatAt: number;
-  /** When this agent last took a checkpoint — how "what changed since I last looked" is answered. */
+  /** When this agent last took a checkpoint - how "what changed since I last looked" is answered. */
   seenAt?: number;
 }
 
@@ -77,7 +77,7 @@ export interface ClaimRecord {
   path: string;
   agentId: string;
   mode: "edit" | "read";
-  /** Why the agent is in this file — the half of the handoff that tokens usually pay for. */
+  /** Why the agent is in this file - the half of the handoff that tokens usually pay for. */
   note?: string;
   since: number;
   expiresAt: number;
@@ -151,7 +151,7 @@ export interface PresenceOptions {
   store?: StateStore;
   /** Heartbeat horizon: an agent silent for longer than this is no longer "alive". */
   agentTtlMs?: number;
-  /** Dead-agent records are dropped once silent this long — "who was here" outlives the aliveness horizon. */
+  /** Dead-agent records are dropped once silent this long - "who was here" outlives the aliveness horizon. */
   staleAgentMs?: number;
   /** Default claim lifetime. */
   claimTtlMs?: number;
@@ -211,7 +211,7 @@ export function resolveBoardPath(cwd = process.cwd()): string {
 }
 
 /**
- * One vocabulary for claims across every read — the MCP boundary must not expose two shapes for the same
+ * One vocabulary for claims across every read - the MCP boundary must not expose two shapes for the same
  * record. `agentId` is the record; `heldBy` reads better on a conflict (whose is it).
  */
 function shapeClaim(record: ClaimRecord) {
@@ -235,7 +235,7 @@ function shapeConflict(record: ClaimRecord) {
 }
 
 /**
- * The claim contention matrix: only edit-vs-edit contends. A read claim is an observer — its overlap
+ * The claim contention matrix: only edit-vs-edit contends. A read claim is an observer - its overlap
  * with an edit claim is informational, never a conflict.
  */
 const CLAIM_CONTENTION: Record<ClaimRecord["mode"], Record<ClaimRecord["mode"], boolean>> = {
@@ -243,18 +243,18 @@ const CLAIM_CONTENTION: Record<ClaimRecord["mode"], Record<ClaimRecord["mode"], 
   read: { edit: false, read: false },
 };
 
-/** One sentence per contention outcome — the same vocabulary as the MCP claim response `summary`. */
+/** One sentence per contention outcome - the same vocabulary as the MCP claim response `summary`. */
 function claimSummary(conflicts: ClaimRecord[], observers: ClaimRecord[]): string {
-  if (conflicts.length > 0) return "another agent holds some of these paths — coordinate before editing";
+  if (conflicts.length > 0) return "another agent holds some of these paths - coordinate before editing";
   if (observers.length > 0) {
-    return `informational overlap: ${observers.map((record) => `${record.agentId} ${record.mode} ${record.path}`).join(", ")} — a read claim is an observer, not a conflict`;
+    return `informational overlap: ${observers.map((record) => `${record.agentId} ${record.mode} ${record.path}`).join(", ")} - a read claim is an observer, not a conflict`;
   }
   return "no other agent holds these paths";
 }
 
 /**
  * Board maps are null-prototype: a caller key like `__proto__` becomes a plain entry instead of reaching
- * through Object.prototype (which the boundary guard rejects anyway — belt and braces).
+ * through Object.prototype (which the boundary guard rejects anyway - belt and braces).
  */
 function safeRecord<T>(): Record<string, T> {
   const record: Record<string, T> = {};
@@ -333,7 +333,7 @@ export class PresenceBoard {
   /**
    * Read-modify-write serialised by the state store: one writer at a time, so `change` always meets the
    * newest document. `change` returns `false` for "nothing to write"; any other value marks the document
-   * dirty and is handed back from the attempt whose write actually landed — a discarded retry's value
+   * dirty and is handed back from the attempt whose write actually landed - a discarded retry's value
    * never escapes, so allocate()/release() cannot report a take or a drop that did not happen.
    */
   public mutate<T>(change: (document: PresenceDocument) => T | false, now = Date.now()): T | false {
@@ -441,7 +441,7 @@ export class PresenceBoard {
    *
    * The board ANNOUNCES with claim() and that is not enough: four fast workers all pass a conflicts() check
    * before any claim lands (measured: 64 audits for a 24-item pool, 88% duplicated). Allocation must be a single
-   * operation — choosing the item and recording its owner happen inside mutate()'s serialised read-modify-write.
+   * operation - choosing the item and recording its owner happen inside mutate()'s serialised read-modify-write.
    */
   public allocate(agentId: string, queueKey: string, items: string[], now = Date.now()): string | null {
     assertSafeKey("agent id", agentId);
@@ -488,7 +488,7 @@ export class PresenceBoard {
   }
 
   /**
-   * Claims held by *other* agents over the given paths that contend with a claim in `mode` — the
+   * Claims held by *other* agents over the given paths that contend with a claim in `mode` - the
    * collision signal is edit-vs-edit only; a read claim is an observer and never conflicts.
    */
   public conflicts(agentId: string, paths: string[], mode: ClaimRecord["mode"] = "edit", now = Date.now()): ClaimRecord[] {
@@ -552,7 +552,7 @@ export class PresenceBoard {
   /**
    * Posts or updates a named signal on the board (e.g. style_contract, shared_tokens, review_status).
    * Persists on the board and is delivered to all agents via checkpoint / presence read.
-   * Lifetime policy: `ttlMs` overrides the default (`signalTtlMs`, 15 minutes) — durable findings
+   * Lifetime policy: `ttlMs` overrides the default (`signalTtlMs`, 15 minutes) - durable findings
    * (`gap/*`) ask for the hours they need instead of re-signalling.
    */
   public signal(
@@ -633,7 +633,7 @@ export class PresenceBoard {
         instruction.rationale,
         now
       );
-      return { refused: true, reason: `${recent.length} directives already issued for this target inside the window — let the agent act before re-steering` };
+      return { refused: true, reason: `${recent.length} directives already issued for this target inside the window - let the agent act before re-steering` };
     }
 
     const directive: DirectiveRecord = {
@@ -663,7 +663,7 @@ export class PresenceBoard {
     return { refused: false, directive };
   }
 
-  /** Live directives addressed to one agent — what its next checkpoint should surface. */
+  /** Live directives addressed to one agent - what its next checkpoint should surface. */
   public directives(agentId: string, now = Date.now()): DirectiveRecord[] {
     return Object.values(this.read().directives)
       .filter((record) => record.agentId === agentId && record.resolvedAt === undefined && record.expiresAt > now)
@@ -675,7 +675,7 @@ export class PresenceBoard {
     assertSafeKey("directive id", id);
     const existing = this.read().directives[id];
     if (!existing) throw new DirectiveNotFoundError(id);
-    if (existing.expiresAt <= now) throw new Error(`Directive "${id}" expired at ${new Date(existing.expiresAt).toISOString()} — issue a new one.`);
+    if (existing.expiresAt <= now) throw new Error(`Directive "${id}" expired at ${new Date(existing.expiresAt).toISOString()} - issue a new one.`);
 
     let updated = existing;
     this.mutate((document) => {
@@ -711,7 +711,7 @@ export class PresenceBoard {
 
   /**
    * Directives that need attention: never acknowledged, and either expired or older than the grace period.
-   * This is what stops a directive from stalling silently — the issuer (or a human) sees it here.
+   * This is what stops a directive from stalling silently - the issuer (or a human) sees it here.
    */
   public escalations(now = Date.now(), graceMs = 120_000): DirectiveRecord[] {
     return Object.values(this.read().directives)

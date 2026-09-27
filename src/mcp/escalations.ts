@@ -3,8 +3,8 @@
  * Every request records the identity that asked (`requestedBy`) and every decision the identity that
  * made it (`approvedBy`); the requesting identity is refused as decider.
  *
- * Extracted from `server.ts` so the approval semantics — fingerprint binding, the status machine,
- * expiry pruning — live in one reviewable unit with no transport, telemetry, or process concerns.
+ * Extracted from `server.ts` so the approval semantics - fingerprint binding, the status machine,
+ * expiry pruning - live in one reviewable unit with no transport, telemetry, or process concerns.
  */
 import crypto from "node:crypto";
 import type { ShieldEvaluation } from "../types.js";
@@ -17,7 +17,7 @@ export interface EscalationRequest {
   fingerprint: string;
   commandOrTool: string;
   evaluation: ShieldEvaluation;
-  /** Identity of the agent whose action triggered this escalation — the identity that must never decide it. */
+  /** Identity of the agent whose action triggered this escalation - the identity that must never decide it. */
   requestedBy: string;
   status: EscalationStatus;
   createdAt: number;
@@ -33,7 +33,7 @@ export const DEFAULT_ESCALATION_TTL_MS = 15 * 60 * 1000;
 /** Marker for a decision the host attributes to nobody; its security posture lives with the host. */
 export const UNATTRIBUTED_APPROVER = "unattributed";
 
-/** Raised when the identity that requested an escalation tries to decide it — a gate the gated controls is no gate. */
+/** Raised when the identity that requested an escalation tries to decide it - a gate the gated controls is no gate. */
 export class SelfApprovalError extends Error {
   constructor(
     public readonly actionId: string,
@@ -47,7 +47,7 @@ export class SelfApprovalError extends Error {
 /** Raised when an approval arrives with no operator identity: approvals must be attributed. */
 export class UnattributedApprovalError extends Error {
   constructor(actionId: string) {
-    super(`Escalation "${actionId}": approval refused — pass approvedBy with the operator identity; unattributed approvals are not accepted.`);
+    super(`Escalation "${actionId}": approval refused - pass approvedBy with the operator identity; unattributed approvals are not accepted.`);
     this.name = "UnattributedApprovalError";
   }
 }
@@ -77,7 +77,7 @@ export class EscalationStore {
     fingerprint: string;
     commandOrTool: string;
     evaluation: ShieldEvaluation;
-    /** The calling agent identity — the identity the decision must never belong to. */
+    /** The calling agent identity - the identity the decision must never belong to. */
     requestedBy: string;
   }): EscalationRequest {
     const now = Date.now();
@@ -106,7 +106,7 @@ export class EscalationStore {
 
   /**
    * Records the operator decision and the identity that made it. Throws when the request is unknown,
-   * expired, or already decided — a stale approval must never be silently re-interpreted — and when
+   * expired, or already decided - a stale approval must never be silently re-interpreted - and when
    * the deciding identity is the one that asked: the gated agent cannot authorize itself.
    */
   public decide(actionId: string, approved: boolean, approvedBy?: string): EscalationRequest {
@@ -121,7 +121,7 @@ export class EscalationStore {
     }
     if (approved && (approvedBy === undefined || approvedBy.trim() === "")) {
       // Fail closed: an approval with no operator identity is the gated agent approving itself with
-      // extra steps (MCP-ESCALATION-SELFAPPROVE). Denials stay allowed — they are the safe direction.
+      // extra steps (MCP-ESCALATION-SELFAPPROVE). Denials stay allowed - they are the safe direction.
       throw new UnattributedApprovalError(actionId);
     }
     const decider = approvedBy ?? UNATTRIBUTED_APPROVER;

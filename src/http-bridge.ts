@@ -5,7 +5,7 @@
  * Harness-neutrality demonstrated rather than asserted: a plain HTTP caller (CrewAI, AutoGen, a curl
  * script) drives coordinator + supervisor end to end on a caller-supplied {@link DecisionEngine} with
  * zero JEV calls, and a hostile payload meets the deterministic offline floor exactly as
- * `bench/corpus.json` requires — the floor short-circuits before the engine is ever consulted.
+ * `bench/corpus.json` requires - the floor short-circuits before the engine is ever consulted.
  *
  * Every call crosses the same `callTool`/`validate.ts` boundary as MCP: there is no second tool
  * surface and no second validation vocabulary. An `isError` tool result is passed through verbatim as
@@ -35,7 +35,7 @@ export class DecisionEngineClient extends JevClient {
   constructor(decisionEngine: DecisionEngine) {
     // Live mode on purpose: the deterministic policy floor short-circuits a hostile action before any
     // engine call ("no cost, no egress"), exactly as it does for a live JEV client. The dummy
-    // credential is never spent — evaluate below replaces the transport entirely.
+    // credential is never spent - evaluate below replaces the transport entirely.
     super({ mode: "live", apiKey: "decision-engine", model: "custom-engine" });
     this.decisionEngine = decisionEngine;
   }
@@ -90,7 +90,7 @@ export function isDecisionEngine(value: unknown): value is DecisionEngine {
 
 export interface HttpBridgeOptions {
   /**
-   * The caller's custom decision engine — every question the tool handlers ask is answered by it.
+   * The caller's custom decision engine - every question the tool handlers ask is answered by it.
    * `JevClient` satisfies `DecisionEngine` structurally, so JEV remains available as the default BYOK
    * substrate; anything else runs with zero JEV calls.
    */
@@ -175,7 +175,7 @@ export function createHttpBridge(options: HttpBridgeOptions): HttpBridge {
     }
 
     const params = body as Record<string, unknown>;
-    // The same envelope coercion as the MCP `tools/call` path (src/mcp/server.ts) — one boundary.
+    // The same envelope coercion as the MCP `tools/call` path (src/mcp/server.ts) - one boundary.
     const name = typeof params.name === "string" ? params.name : "";
     const rawArguments = params.arguments;
     const args =
@@ -222,21 +222,21 @@ export interface BridgeServerOptions {
   host?: string;
   /** Bind port. Default 0 (an ephemeral port); the bin supplies its product default. */
   port?: number;
-  /** Body cap at the socket layer (default 64 KB) — the origin backstop behind any reverse proxy. */
+  /** Body cap at the socket layer (default 64 KB) - the origin backstop behind any reverse proxy. */
   maxBodyBytes?: number;
 }
 
 export interface BridgeServer {
   /** e.g. `http://127.0.0.1:8788` */
   url: string;
-  /** The address the socket is actually bound to — loopback unless a host was passed explicitly. */
+  /** The address the socket is actually bound to - loopback unless a host was passed explicitly. */
   host: string;
   port: number;
   close: () => Promise<void>;
 }
 
 /**
- * Serves the bridge on a real `node:http` socket (Node and Bun alike). Loopback by default — the
+ * Serves the bridge on a real `node:http` socket (Node and Bun alike). Loopback by default - the
  * same posture as `server/main.ts`: exposure happens through a reverse proxy or an explicit host,
  * never by accident.
  */

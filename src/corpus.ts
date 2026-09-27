@@ -1,15 +1,15 @@
 /**
- * Versioned corpus store — the moat's storage contract (PROJECT_PHASES.md S1.1, SS-SC-53/54).
+ * Versioned corpus store - the moat's storage contract (PROJECT_PHASES.md S1.1, SS-SC-53/54).
  *
  * The corpus is an APPEND-ONLY log of adjudicated cases plus tombstones:
  * - `schemaVersion: 1`; every case record carries provenance
- *   `{ admittingPipeline, protocolVersion, evidenceHash, admittedAt }` — a write without complete
+ *   `{ admittingPipeline, protocolVersion, evidenceHash, admittedAt }` - a write without complete
  *   provenance is refused with `CorpusWriteError("unattributed")` and nothing is appended.
  * - A case is admitted exactly once and is NEVER edited or deleted. A retraction appends a
  *   `tombstone { caseId, successor?, reason, at }` which shadows the case: the live view loses the
  *   case and gains the tombstone, while the original admit record stays in the log byte-for-byte.
- * - Export is deterministic, diffable JSON — object keys sorted, cases and tombstones sorted by
- *   `caseId`, 2-space indented — so corpus changes review as line diffs. Replaying the raw append
+ * - Export is deterministic, diffable JSON - object keys sorted, cases and tombstones sorted by
+ *   `caseId`, 2-space indented - so corpus changes review as line diffs. Replaying the raw append
  *   log reproduces the export byte-for-byte (`replayCorpusLog`).
  *
  * The hosted control plane (`server/control-plane.ts`) and the lab-side corpus consume this same
@@ -39,7 +39,7 @@ export interface CorpusCase {
   provenance: CaseProvenance;
 }
 
-/** Retraction record. Never an edit of the case it shadows — a new append-only record. */
+/** Retraction record. Never an edit of the case it shadows - a new append-only record. */
 export interface Tombstone {
   caseId: string;
   /** Successor case, when the retraction supersedes rather than withdraws. */
@@ -190,7 +190,7 @@ function byCaseId(a: { caseId: string }, b: { caseId: string }): number {
   return 0;
 }
 
-/** Recursively sorted keys — same payload content always serializes to the same bytes. */
+/** Recursively sorted keys - same payload content always serializes to the same bytes. */
 function canonicalize(value: unknown): unknown {
   if (value === null || typeof value !== "object") return value;
   if (Array.isArray(value)) return value.map((entry) => canonicalize(entry));
@@ -225,7 +225,7 @@ export function resolveCorpusDir(dataDir: string, env: Record<string, string | u
 // ─── File-backed store ────────────────────────────────────────────────────────
 
 /**
- * File-backed `CorpusStore`: one append-only JSONL log (`append.jsonl`) that IS the corpus —
+ * File-backed `CorpusStore`: one append-only JSONL log (`append.jsonl`) that IS the corpus  - 
  * state is folded from it at construction and every write is a single appended line before it is
  * reflected in memory. A refused write (attribution/duplication/policy) appends nothing; an I/O
  * failure surfaces as `CorpusWriteError("io")` so callers can fail the request instead of silently

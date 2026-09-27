@@ -16,7 +16,7 @@ export function listTools(): ToolDefinition[] {
       name: "sentinel_shield_inspect",
       description:
         "Pre-flight safety inspection for HIGH-RISK, destructive, or irreversible system operations ONLY (e.g. broad deletions, system path wipes, dropping databases, running untrusted remote scripts, or network exfiltration). " +
-        "DO NOT call this tool for routine coding: file reads, code edits, git status/diff/log/branch, package installs (npm/bun/pip), or build/test runs — routine development does not require inspection.",
+        "DO NOT call this tool for routine coding: file reads, code edits, git status/diff/log/branch, package installs (npm/bun/pip), or build/test runs - routine development does not require inspection.",
       inputSchema: {
         type: "object",
         properties: {
@@ -31,9 +31,9 @@ export function listTools(): ToolDefinition[] {
       name: "sentinel_approve_escalation",
       description:
         "Operator authorization for one escalated action. Approvals are single-use, bound to the exact action payload, and expire. " +
-        "Approvals must be attributed: pass approvedBy with your host's operator identity — unattributed approvals, and decisions " +
+        "Approvals must be attributed: pass approvedBy with your host's operator identity - unattributed approvals, and decisions " +
         "attributed to the identity that requested the escalation, are both refused. " +
-        "Configure your MCP host to always require human confirmation for this tool — the server cannot verify who calls it.",
+        "Configure your MCP host to always require human confirmation for this tool - the server cannot verify who calls it.",
       inputSchema: {
         type: "object",
         properties: {
@@ -89,7 +89,7 @@ export function listTools(): ToolDefinition[] {
     {
       name: "sentinel_presence",
       description:
-        "Shared presence board for every agent working in this repository (advisory — it never blocks an action). " +
+        "Shared presence board for every agent working in this repository (advisory - it never blocks an action). " +
         "Quick usage: " +
         "• Claim files before writing: { action: 'claim', paths: ['src/file.js'], mode: 'edit', note: 'why' }. " +
         "• Release files when done: { action: 'release', paths: ['src/file.js'] }. " +
@@ -107,7 +107,7 @@ export function listTools(): ToolDefinition[] {
           },
           paths: { type: "array", items: { type: "string" }, description: "Repository-relative paths to read, claim, or release" },
           mode: { type: "string", enum: ["edit", "read"], description: "Claim mode (default edit)" },
-          note: { type: "string", description: "Why you are in these paths (or a note on an acknowledgement) — other agents inherit this" },
+          note: { type: "string", description: "Why you are in these paths (or a note on an acknowledgement) - other agents inherit this" },
           ttlMinutes: { type: "number", description: "Claim or directive lifetime in minutes (default 15 for claims, 10 for directives; max 1440)" },
           directiveId: { type: "string", description: "Directive to acknowledge or resolve (action: ack / resolve)" },
           agentId: { type: "string", description: "Calling agent identity (defaults to server PID); for 'direct', the target agent to steer" },
@@ -118,7 +118,7 @@ export function listTools(): ToolDefinition[] {
           kind: { type: "string", enum: ["pause", "reprioritize", "abandon", "handoff"], description: "Directive kind (action: direct)" },
           target: { type: "string", description: "What the directive is about: a path, a job id, or a short description (action: direct)" },
           issuedBy: { type: "string", description: "Who is issuing the directive (action: direct; defaults to the caller)" },
-          rationale: { type: "string", description: "Why the directive was issued — the steered agent inherits this" },
+          rationale: { type: "string", description: "Why the directive was issued - the steered agent inherits this" },
         },
         required: ["action"],
       },

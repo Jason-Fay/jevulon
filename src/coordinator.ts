@@ -34,7 +34,7 @@ export interface DecisionLogEntry {
 
 /**
  * A recorded run step. Decisions are what the model selected; worker deaths are the state
- * mutations that made recovery decisions necessary — replay needs both to be faithful.
+ * mutations that made recovery decisions necessary - replay needs both to be faithful.
  */
 export type ReplayStep =
   | { kind: "decision"; entry: DecisionLogEntry }
@@ -70,7 +70,7 @@ export class SwarmCoordinator {
   private engine: DecisionEngine;
   private completionThreshold: number;
   private decisionLog: DecisionLogEntry[] = [];
-  /** Menu hints adopted from the last applied profile version (clamped data — see `applyMenuHints`). */
+  /** Menu hints adopted from the last applied profile version (clamped data - see `applyMenuHints`). */
   private menuHints: Record<string, "prefer" | "avoid"> = {};
   /** Version whose hints were adopted: each profile version's hints apply exactly once. */
   private appliedMenuHintsVersion: number | undefined;
@@ -125,7 +125,7 @@ export class SwarmCoordinator {
    *
    * Out-of-vocabulary answers and JEV transport failures fall back to a deterministic
    * dispatch (first candidate pair, stable order) and are flagged on the decision instead of
-   * stalling the run or crashing it. Stored menu hints may reorder or filter the offered menu —
+   * stalling the run or crashing it. Stored menu hints may reorder or filter the offered menu  - 
    * never widen it and never steer this fallback (the offline floor is hint-proof).
    */
   public async planNextAction(board: Blackboard): Promise<DispatchDecision | null> {
@@ -157,7 +157,7 @@ export class SwarmCoordinator {
 
     // Rule 3: Dynamic Menu Synthesis with Key-Map (Fixes Bug 1)
     // `menuKeys` stays the un-hinted menu: it names the offline floor. Stored hints reorder or
-    // filter only what the model is offered (`offered`) — the candidates and key map are untouched.
+    // filter only what the model is offered (`offered`) - the candidates and key map are untouched.
     const menuKeys = Object.keys(plan.menu);
     const offered = applyMenuHints(plan.menu, plan.keyMap, this.menuHints);
 
@@ -183,8 +183,8 @@ export class SwarmCoordinator {
       });
     }
 
-    // Exact ids come from the key map — immune to underscores or special chars. A non-menu answer
-    // falls back to the first candidate pair (stable order — exactly what menuKeys[0] names, and
+    // Exact ids come from the key map - immune to underscores or special chars. A non-menu answer
+    // falls back to the first candidate pair (stable order - exactly what menuKeys[0] names, and
     // what hint reordering must never move) and is flagged; only a live-but-invalid answer is logged
     // here, because a transport failure already logged its own fallback above.
     let chosen = rawChoice;
@@ -219,7 +219,7 @@ export class SwarmCoordinator {
 
   /**
    * Deterministic Replay Engine (Exp 83).
-   * Re-executes a recorded run script — dispatch decisions plus worker deaths — against a board seeded
+   * Re-executes a recorded run script - dispatch decisions plus worker deaths - against a board seeded
    * with the same starting state, with ZERO JEV calls: every recorded action is validated against the
    * menu the original decision faced and applied through the board's normal guards.
    *

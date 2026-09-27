@@ -51,7 +51,7 @@ function clamp01(value: unknown): number {
 const DEFAULT_RETRIES = 5;
 const MAX_RETRIES = 10;
 
-/** Retries are bounded: default 5, cap 10 — enough resilience without unbounded retry storms. */
+/** Retries are bounded: default 5, cap 10 - enough resilience without unbounded retry storms. */
 function clampRetries(requested: number | undefined): number {
   const value = requested ?? DEFAULT_RETRIES;
   return Number.isFinite(value) ? Math.min(MAX_RETRIES, Math.max(0, Math.floor(value))) : DEFAULT_RETRIES;

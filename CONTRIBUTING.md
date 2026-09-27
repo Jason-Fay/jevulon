@@ -22,7 +22,7 @@ credential to pass.
 
 ### Habit: typecheck before scoped tests
 
-When iterating on one area, a scoped run (`bun test tests/<file>.test.ts`) is fine — but run
+When iterating on one area, a scoped run (`bun test tests/<file>.test.ts`) is fine - but run
 `bun run typecheck` **first**: a scoped green run says nothing about the rest of the tree. The gate
 before you hand work over is `bun run verify` (strict typecheck of `src` + `scripts` + `tests` +
 `examples`, then the full suite).
@@ -57,7 +57,7 @@ This project exists because multi-agent orchestration claims are usually unfalsi
 2. `expectation` is policy: `block` = irreversible/catastrophic, `escalate` = ambiguous (human
    confirmation), `allow` = safe or reversible.
 3. Run `bun run bench`. A verdict stricter than expected is reported (`stricter` / `intercepted`) but
-   passes; a `safe` case that starts blocking is an `over-cautious` result and must be fixed — false
+   passes; a `safe` case that starts blocking is an `over-cautious` result and must be fixed - false
    positives are how safety tooling gets uninstalled.
 4. Prefer structured `arguments` for tool-call cases: the classifier reads the flattened string values,
    so a case that only embeds the command in prose will not exercise the intended path.
@@ -105,14 +105,14 @@ This project exists because multi-agent orchestration claims are usually unfalsi
 **Semver policy.** The project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html), and
 the bumps mean behaviour here, not just code shape:
 
-- **MAJOR** — a breaking change to the published API surface (the export list pinned in
+- **MAJOR** - a breaking change to the published API surface (the export list pinned in
   `tests/api-surface.test.ts`), the wire types, or the `swarm-sentinel.run v1` artifact schema. Any
-  change that *loosens* the deterministic floor — a class the corpus blocks becoming `allow` — is
+  change that *loosens* the deterministic floor - a class the corpus blocks becoming `allow` - is
   breaking by definition and needs a MAJOR bump plus an explicit, evidence-backed rationale.
-- **MINOR** — additive and behavioural: new exports, tools, or adapters; corpus growth; floor
+- **MINOR** - additive and behavioural: new exports, tools, or adapters; corpus growth; floor
   tightenings (new blocks). A stricter verdict is a behaviour change and is called out in the
   CHANGELOG, never hidden in a patch.
-- **PATCH** — fixes, diagnostics, and docs that change neither the surface nor any verdict.
+- **PATCH** - fixes, diagnostics, and docs that change neither the surface nor any verdict.
 
 Before 1.0.0 the same discipline applies even where semver would allow more. A release is exactly the
 tagged `vX.Y.Z`, the tag must match `package.json`'s `version` character-for-character (the release
@@ -124,7 +124,7 @@ workflow refuses any other), and `CHANGELOG.md`'s `Unreleased` section is emptie
 Publishing is CI's job; a release is a tag. From a clean checkout, a maintainer:
 
 1. Bumps `version` in `package.json` and moves the `CHANGELOG.md` `Unreleased` entries into a dated
-   `## [X.Y.Z] - YYYY-MM-DD` section. Version bumps and tags are human steps — CI never makes them.
+   `## [X.Y.Z] - YYYY-MM-DD` section. Version bumps and tags are human steps - CI never makes them.
 2. Commits on `main`, tags exactly `vX.Y.Z`, and pushes the tag:
    `git tag vX.Y.Z && git push origin vX.Y.Z`.
 3. `.github/workflows/release.yml` runs on the tag from a fresh checkout: `bun run verify`, then
@@ -141,7 +141,7 @@ the package page.
 #### One-time npm setup (a maintainer, once per package)
 
 1. Confirm the maintainer has publish rights on the `@metawave` scope (a human checks scope ownership
-   before the first release — npm credentials and scope ownership stay out of CI).
+   before the first release - npm credentials and scope ownership stay out of CI).
 2. On [npmjs.com](https://www.npmjs.com) → the package → **Settings → Trusted Publisher → Add GitHub
    Actions publisher**, filling in:
 

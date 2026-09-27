@@ -3,7 +3,7 @@
  *
  * An artifact is self-contained and tamper-EVIDENT: every field is canonicalized, hashed, and
  * re-verified on parse, and the decision hash inside the run block is cross-checked against the
- * steps. That catches inconsistent edits, not a motivated forger — real tamper-resistance needs a
+ * steps. That catches inconsistent edits, not a motivated forger - real tamper-resistance needs a
  * host signature over `integrity.hash`, which the envelope carries via `signature` (never hashed).
  */
 import crypto from "node:crypto";
@@ -154,7 +154,7 @@ function canonicalContent(content: RunArtifactContent): RunArtifactContent {
   };
 }
 
-/** SHA-256 over the canonical content — the tamper-evidence anchor a host would sign. */
+/** SHA-256 over the canonical content - the tamper-evidence anchor a host would sign. */
 export function artifactIntegrityHash(content: RunArtifactContent): string {
   return crypto.createHash("sha256").update(JSON.stringify(canonicalContent(content))).digest("hex");
 }
@@ -241,7 +241,7 @@ export function parseRunArtifact(raw: unknown): RunArtifact {
     try {
       candidate = JSON.parse(raw);
     } catch (error) {
-      throw new RunArtifactIntegrityError(`artifact: not valid JSON — ${error instanceof Error ? error.message : String(error)}`);
+      throw new RunArtifactIntegrityError(`artifact: not valid JSON - ${error instanceof Error ? error.message : String(error)}`);
     }
   }
   if (candidate === null || typeof candidate !== "object") {
@@ -289,7 +289,7 @@ export function parseRunArtifact(raw: unknown): RunArtifact {
   const expected = artifactIntegrityHash(content);
   if (expected !== candidate.integrity.hash) {
     throw new RunArtifactIntegrityError(
-      "artifact: integrity check failed — the content does not match its recorded hash",
+      "artifact: integrity check failed - the content does not match its recorded hash",
       expected,
       candidate.integrity.hash
     );
@@ -350,7 +350,7 @@ function scrubEntry(entry: DecisionLogEntry, scrub: Scrubber): DecisionLogEntry 
   };
 }
 
-/** Scrubs the text inputs of a replay report before canonicalization — never after hashing. */
+/** Scrubs the text inputs of a replay report before canonicalization - never after hashing. */
 function scrubReport(report: ReplayReport, scrub: Scrubber): ReplayReport {
   return {
     decisions: report.decisions,

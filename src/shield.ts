@@ -64,7 +64,7 @@ export class SwarmShield {
    */
   public async inspectAction(action: ActionProposal): Promise<ShieldEvaluation> {
     if (!action || typeof action.commandOrTool !== "string" || !action.commandOrTool.trim()) {
-      // Fail closed: a blank action is unclassifiable, and unclassifiable never means "allow" —
+      // Fail closed: a blank action is unclassifiable, and unclassifiable never means "allow"  - 
       // only a human may clear it.
       return {
         verdict: "escalate_human",
@@ -86,7 +86,7 @@ export class SwarmShield {
         verdict: "block",
         riskScore: 4,
         destructiveProbability: 1,
-        reason: `Blocked by the deterministic policy floor (${floor.rule}) — decided offline, no model call.`,
+        reason: `Blocked by the deterministic policy floor (${floor.rule}) - decided offline, no model call.`,
         latencyMs: 0,
         floorVerdict: "block",
         floorRule: floor.rule,

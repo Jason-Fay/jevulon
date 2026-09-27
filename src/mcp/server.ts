@@ -5,8 +5,8 @@
  * - Blocks are terminal: an approval can never turn a `block` into an execution.
  * - Escalations are DENIED by default; approval is single-use, bound to the exact action payload
  *   (canonical fingerprint), and expires. A decision attributed to the identity that requested the
- *   escalation is refused — the gated agent cannot authorize itself.
- * - All tool input is validated at runtime — a JSON string "false" is not approval.
+ *   escalation is refused - the gated agent cannot authorize itself.
+ * - All tool input is validated at runtime - a JSON string "false" is not approval.
  * - Supervision is delegated to SwarmSupervisor, so waves, recovery, the calibrated completion
  *   gate, and usage counters come from the same code paths the library ships and tests.
  * - stdout carries JSON-RPC only; diagnostics go to stderr.
@@ -63,7 +63,7 @@ export interface McpServerOptions {
 
 /**
  * Optional operator attribution on an approval decision, validated in the `validate.ts` style: a
- * wrong-typed field is an error — never a truthiness coercion.
+ * wrong-typed field is an error - never a truthiness coercion.
  */
 function validateApproveAttribution(tool: string, args: Record<string, unknown>): { approvedBy?: string } {
   const value = args.approvedBy;
@@ -177,7 +177,7 @@ export class McpServer {
   }
 
   /**
-   * sentinel_shield_inspect — evaluates a command or tool call before execution.
+   * sentinel_shield_inspect - evaluates a command or tool call before execution.
    * Blocks are terminal. Escalations are denied unless an unconsumed, unexpired approval matches
    * the exact payload; approval is consumed on use.
    */
@@ -233,7 +233,7 @@ export class McpServer {
         verdict: "escalate_human",
         allowed: true,
         ...base,
-        reason: `${evaluation.reason} Operator authorization ${approved.approvalId} accepted — consumed now, single use.`,
+        reason: `${evaluation.reason} Operator authorization ${approved.approvalId} accepted - consumed now, single use.`,
         approvalId: approved.approvalId,
         approvalConsumed: true,
       };
@@ -285,7 +285,7 @@ export class McpServer {
   }
 
   /**
-   * sentinel_approve_escalation — operator authorization for one exact payload.
+   * sentinel_approve_escalation - operator authorization for one exact payload.
    * This tool is only a human gate if the MCP host is configured to prompt for it. The decision is
    * attributed to `approvedBy` (recorded as `unattributed` when the host attributes nothing) and
    * refused when that identity is the one that requested the escalation.
@@ -309,7 +309,7 @@ export class McpServer {
     };
   }
 
-  /** sentinel_oversight_monitor — evaluates a worker trace for loops and deadlocks. */
+  /** sentinel_oversight_monitor - evaluates a worker trace for loops and deadlocks. */
   public async handleOversightMonitor(args: MonitorToolArgs): Promise<OversightEvaluation> {
     await this.init();
     this.memory?.increment("oversightEvaluations");
@@ -333,7 +333,7 @@ export class McpServer {
     return evaluation;
   }
 
-  /** sentinel_supervise — dispatches work through the recovery supervisor. */
+  /** sentinel_supervise - dispatches work through the recovery supervisor. */
   public async handleSupervise(args: SuperviseToolArgs): Promise<Record<string, unknown>> {
     await this.init();
     const supervisor = this.supervisor;
@@ -345,7 +345,7 @@ export class McpServer {
     return result;
   }
 
-  /** sentinel_get_status — current board, supervisor state, and usage counters. */
+  /** sentinel_get_status - current board, supervisor state, and usage counters. */
   public async handleGetStatus(): Promise<Record<string, unknown>> {
     await this.init();
     this.escalations.prune();
@@ -368,7 +368,7 @@ export class McpServer {
   }
 
   /**
-   * sentinel_presence — the shared board for agents that never talk to each other.
+   * sentinel_presence - the shared board for agents that never talk to each other.
    * Advisory by construction: claims and trails inform, they never block (the shield floor does that).
    */
   public async handlePresence(args: PresenceToolArgs): Promise<Record<string, unknown>> {
@@ -439,9 +439,9 @@ export class McpServer {
         recentActivityOnPaths: recentPathEvents,
         summary:
           conflicts.length > 0
-            ? "another agent holds some of these paths — coordinate before editing"
+            ? "another agent holds some of these paths - coordinate before editing"
             : observers.length > 0
-              ? `informational overlap: ${observers.map((record) => `${record.agentId} ${record.mode} ${record.path}`).join(", ")} — a read claim is an observer, not a conflict`
+              ? `informational overlap: ${observers.map((record) => `${record.agentId} ${record.mode} ${record.path}`).join(", ")} - a read claim is an observer, not a conflict`
               : "no other agent holds these paths",
         signals: store.signals({}, Date.now()),
         directives: this.pendingDirectives(callerId),
@@ -465,7 +465,7 @@ export class McpServer {
             try {
               new vm.Script(m[1]);
             } catch (err: any) {
-              syntaxErrors.push(`${p}: <script> syntax error — ${err.message}`);
+              syntaxErrors.push(`${p}: <script> syntax error - ${err.message}`);
             }
           }
         }
@@ -510,7 +510,7 @@ export class McpServer {
         author: record.author,
         updatedAt: record.updatedAt,
         expiresAt: record.expiresAt,
-        // The signal TTL policy travels with the response: default 15 minutes, capped at 1440 —
+        // The signal TTL policy travels with the response: default 15 minutes, capped at 1440  - 
         // durable findings (e.g. gap/*) ask for the hours they need instead of re-signalling.
         ttlMinutes: Math.round(((record.expiresAt ?? record.updatedAt) - record.updatedAt) / 60_000),
         note: "Signals expire after ttlMinutes (default 15 minutes, max 1440): post durable findings (e.g. gap/*) with an explicit ttlMinutes instead of re-signalling.",

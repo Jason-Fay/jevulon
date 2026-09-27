@@ -1,6 +1,6 @@
 export * from "./types.js";
 export * from "./errors.js";
-// License surface: verification and gates are public; mintLicense stays internal to fulfillment —
+// License surface: verification and gates are public; mintLicense stays internal to fulfillment  - 
 // shipping a signer next to the verifier turns license forgery into an import (LIC-ENV-DOWNGRADE).
 export {
   LicenseError,

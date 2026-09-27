@@ -1,7 +1,7 @@
 /**
  * Transport retry policy for the JEV client.
  *
- * Extracted verbatim from `client.ts` — which failures are worth another attempt, and how long to wait, are
+ * Extracted verbatim from `client.ts` - which failures are worth another attempt, and how long to wait, are
  * decisions that can be tested without a network.
  */
 import { JevHttpError, JevUnavailableError } from "./errors.js";
@@ -21,7 +21,7 @@ export const MAX_BACKOFF_MS = 30_000;
 /**
  * True for failures that are worth another attempt: HTTP rate limiting and server faults, the
  * fallback-class JevUnavailableError, and socket-level transport faults (reset, timeout, DNS).
- * Programming errors — TypeError, RangeError, assertion failures — are deterministic, so retrying
+ * Programming errors - TypeError, RangeError, assertion failures - are deterministic, so retrying
  * them only burns the backoff budget: they fail immediately.
  */
 export function isTransient(error: Error): boolean {

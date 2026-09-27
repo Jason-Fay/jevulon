@@ -2,7 +2,7 @@
  * Dispatch planning: menu synthesis, the model-facing state payload, and replay diagnostics.
  *
  * Extracted from `coordinator.ts`: these functions are shared by live planning and deterministic replay,
- * and apart from the board they read they are pure — which is what lets the menu policy (Exp 84) be
+ * and apart from the board they read they are pure - which is what lets the menu policy (Exp 84) be
  * tested without an engine.
  */
 import type { Blackboard } from "./blackboard.js";
@@ -22,7 +22,7 @@ export const MAX_STATE_TEXT = 400;
 
 /**
  * Caps the dispatch menu (candidates × idle workers) at 400 structured entries. Truncation is
- * deterministic — the first pairs in board order — so planning and replay always see the same menu,
+ * deterministic - the first pairs in board order - so planning and replay always see the same menu,
  * and pairs beyond the cap stay on the board for a later wave: a big-but-legal board must never
  * inflate the model payload toward the 512KB transport guard.
  */
@@ -67,12 +67,12 @@ export function inferTargetSensitivity(target?: string, title?: string): DataSen
 }
 
 /**
- * Synthesizes the dispatch menu (and its key map) from the board — shared by planning and replay.
+ * Synthesizes the dispatch menu (and its key map) from the board - shared by planning and replay.
  * Wounded work takes precedence over pending work, and either way every candidate is paired with every
  * idle worker under a structured key that survives underscores and special characters in ids.
  *
  * Returns null when nothing is *dispatchable*. Running jobs may still be in flight, so null is not a
- * completion signal — the supervisor's completion gate checks running work separately.
+ * completion signal - the supervisor's completion gate checks running work separately.
  */
 export function buildDispatchPlan(board: Blackboard): DispatchPlan | null {
   const snapshot = board.getSnapshot();
@@ -118,7 +118,7 @@ export function buildDispatchPlan(board: Blackboard): DispatchPlan | null {
 }
 
 /**
- * Menu hints from calibration profiles — the profile clamp extended to menus. A hint key names a
+ * Menu hints from calibration profiles - the profile clamp extended to menus. A hint key names a
  * menu entity as `<kind>:<id>` with `kind` from this static vocabulary; its value steers that
  * entity's entries (`prefer` floats them to the front, `avoid` filters them out). Hints are data,
  * never code: an unknown key, an out-of-vocabulary target, or an oversized payload makes the whole
@@ -132,7 +132,7 @@ export const MAX_MENU_HINT_KEY = 128;
 
 /**
  * Validates a stored hint set at the profile gateway. Any violation rejects the WHOLE set (with the
- * reason in `rejected`) — partial sanitising would let a hostile set smuggle effective hints past
+ * reason in `rejected`) - partial sanitising would let a hostile set smuggle effective hints past
  * review.
  */
 export function validateMenuHints(raw: unknown): { hints: Record<string, "prefer" | "avoid">; rejected?: string } {
@@ -167,7 +167,7 @@ export function validateMenuHints(raw: unknown): { hints: Record<string, "prefer
 
 /**
  * Applies validated hints to an already-built menu: `prefer` floats matching entries to the front
- * (stable), `avoid` filters them out — clamped so the menu is never emptied below its floor entry,
+ * (stable), `avoid` filters them out - clamped so the menu is never emptied below its floor entry,
  * the stable first pair (exactly the deterministic offline fallback). Pure over the plan: only the
  * offered menu changes, so hints can never add an option, widen the candidates, or touch the floor.
  */

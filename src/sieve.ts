@@ -1,7 +1,7 @@
 /**
  * Sieve evaluation library: gate parsing and scorecard aggregation for `*.jev.json` judge programs.
  *
- * Pure functions, no I/O — the CLI runner and the `sentinel_code_review` tool supply answers, the
+ * Pure functions, no I/O - the CLI runner and the `sentinel_code_review` tool supply answers, the
  * caller's live mode collects them. Written so that gate expressions the program author wrote are
  * either evaluated or reported as `unevaluable` with a reason: silently dropping a gate is how a
  * security abort ends up never firing.

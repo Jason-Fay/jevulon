@@ -16,7 +16,7 @@ export class OversightStream {
   /**
    * Evaluates an agent event in real-time (~280ms, $0.00008) to catch runaway loops,
    * deadlocks, and worker pathologies before tokens or money are wasted.
-   * Throws InvalidJevAnswerError when the model answers outside the verdict menu — an
+   * Throws InvalidJevAnswerError when the model answers outside the verdict menu - an
    * un-judgeable safety monitor must not silently report "continue".
    */
   public async evaluateEvent(event: {

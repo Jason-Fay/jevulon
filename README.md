@@ -7,9 +7,9 @@
 
 ### Run coding agents in true parallel. Faster, cheaper, zero quality loss.
 
-Normal multi-agent setups just open multiple terminal tabs at once — burning thousands of tokens arguing about who does what and constantly overwriting each other's code.
+Normal multi-agent setups just open multiple terminal tabs at once, burning thousands of tokens arguing about who does what and constantly overwriting each other's code.
 
-**JEVULON VII is the first true parallel framework for AI coding agents.** By combining instant System-1 task routing with live whiteboard file locking (`board.json`), your **Claude Code**, **Cursor**, **Codex**, and **LangGraph** agents work in true parallel — from 2 agents to a full swarm — with zero file overwrites and zero wasted supervisor chat tokens.
+**JEVULON VII is the first true parallel framework for AI coding agents.** By combining instant System-1 task routing with live whiteboard file locking (`board.json`), your **Claude Code**, **Cursor**, **Codex**, and **LangGraph** agents work in true parallel (from 2 agents to a full swarm) with zero file overwrites and zero wasted supervisor chat tokens.
 
 ---
 
@@ -37,9 +37,9 @@ Add JEVULON VII to your `claude_desktop_config.json` or Cursor MCP settings:
 ```
 
 Once connected, your agents automatically gain access to the coordination tools:
-* `sentinel_presence` — Claims files before editing and checks for workspace collisions.
-* `sentinel_shield_inspect` — Deterministic zero-latency policy floor guarding destructive commands.
-* `sentinel_supervise` — Autonomous wave dispatch, worker recovery, and completion verification.
+* `sentinel_presence`: Claims files before editing and checks for workspace collisions.
+* `sentinel_shield_inspect`: Deterministic zero-latency policy floor guarding destructive commands.
+* `sentinel_supervise`: Autonomous wave dispatch, worker recovery, and completion verification.
 
 ---
 

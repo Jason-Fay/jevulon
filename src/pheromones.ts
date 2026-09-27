@@ -1,7 +1,7 @@
 /**
  * Stigmergic pheromone fields (Exp 74): bounded, evaporating trails that bias dispatch.
  *
- * Extracted from `blackboard.ts`: the field is pure bookkeeping — deposits never go negative, the map
+ * Extracted from `blackboard.ts`: the field is pure bookkeeping - deposits never go negative, the map
  * is capped (lowest-value entry evicted) so a hostile target space cannot exhaust memory, and decay
  * removes entries that fall below the trace threshold.
  */

@@ -1,16 +1,16 @@
 /**
- * Durable state storage behind `PresenceBoard` — the seam that lifts the board's single-process ceiling.
+ * Durable state storage behind `PresenceBoard` - the seam that lifts the board's single-process ceiling.
  *
  * The board document is shared by whole swarms of OS processes, so read-modify-write must be one writer
  * at a time. Two variants live behind this interface, selected by `SWARM_SENTINEL_STATE_STORE`
  * (`file` | `sqlite`, default `file`):
  *
- * - **FileStateStore** — one JSON document plus a lock file created with exclusive-create. The lock
+ * - **FileStateStore** - one JSON document plus a lock file created with exclusive-create. The lock
  *   carries the time it was taken: a writer that crashes cannot wedge the board, because once the lock
  *   is older than `lockTtlMs` the next writer takes it over. Waiting writers back off with a bounded
- *   exponential delay and a bounded budget — a live holder is reported (`StateStoreBusyError`), never
+ *   exponential delay and a bounded budget - a live holder is reported (`StateStoreBusyError`), never
  *   spun on forever.
- * - **SqliteStateStore** — the same document as one row, mutated inside a `BEGIN IMMEDIATE` transaction.
+ * - **SqliteStateStore** - the same document as one row, mutated inside a `BEGIN IMMEDIATE` transaction.
  *   SQLite serialises writers natively and rolls a crashed writer's half-written transaction back on
  *   the next open: crash recovery is the engine's job, not a human's.
  *
@@ -18,7 +18,7 @@
  * ENOENT-only read fallback, quarantine-on-corrupt, prune-on-mutate, `mutate()` return threading,
  * prototype-immune maps) is preserved unchanged above this line.
  *
- * SQLite drivers: `node:sqlite` (Node >= 22) where it exists, `bun:sqlite` otherwise — Bun (as of 1.3)
+ * SQLite drivers: `node:sqlite` (Node >= 22) where it exists, `bun:sqlite` otherwise - Bun (as of 1.3)
  * does not implement `node:sqlite`, and both are built-ins of their runtime. Zero npm dependencies
  * either way, and the `file` variant never touches SQLite at all.
  */
@@ -31,7 +31,7 @@ export type StateStoreKind = "file" | "sqlite";
 
 /** What an `update()` change hands back: the state to persist and the caller's outcome to thread out. */
 export interface StateUpdate<R> {
-  /** The document to persist — written only by the attempt whose write actually lands. */
+  /** The document to persist - written only by the attempt whose write actually lands. */
   next: unknown;
   /** The caller's outcome; a discarded attempt's result never escapes (allocate/release count on this). */
   result: R;
@@ -43,7 +43,7 @@ export interface StateStore {
    * The parsed persisted state, or `undefined` when the store is absent or was quarantined. Only an
    * absent store reads empty: any other read failure (EPERM, EISDIR, a file that is not a database ...)
    * surfaces, because swallowing it would hand callers an empty document and the next write would wipe
-   * real state. Unparseable persisted content is quarantined aside — never a caller failure.
+   * real state. Unparseable persisted content is quarantined aside - never a caller failure.
    */
   load(): unknown;
   /**
@@ -53,13 +53,13 @@ export interface StateStore {
   update<R>(change: (current: unknown) => StateUpdate<R> | false): R | false;
 }
 
-/** Raised when a live holder keeps the file lock past the whole wait budget — a wedged board is never silent. */
+/** Raised when a live holder keeps the file lock past the whole wait budget - a wedged board is never silent. */
 export class StateStoreBusyError extends Error {
   constructor(
     public readonly boardPath: string,
     public readonly lockTtlMs: number
   ) {
-    super(`Board store "${boardPath}" stayed locked past the wait budget — a holder older than ${lockTtlMs}ms would have been taken over.`);
+    super(`Board store "${boardPath}" stayed locked past the wait budget - a holder older than ${lockTtlMs}ms would have been taken over.`);
     this.name = "StateStoreBusyError";
   }
 }
@@ -67,7 +67,7 @@ export class StateStoreBusyError extends Error {
 /** Raised for a `SWARM_SENTINEL_STATE_STORE` value that names no store: loud beats silently wrong. */
 export class StateStoreConfigError extends Error {
   constructor(public readonly value: string) {
-    super(`SWARM_SENTINEL_STATE_STORE="${value}" names no state store — use "file" or "sqlite".`);
+    super(`SWARM_SENTINEL_STATE_STORE="${value}" names no state store - use "file" or "sqlite".`);
     this.name = "StateStoreConfigError";
   }
 }
@@ -107,7 +107,7 @@ function parseSlot(raw: string | undefined): unknown {
 /**
  * File-backed JSON with cross-process one-writer locking.
  *
- * Locking is a sibling `<board>.lock` file created with `wx` (exclusive create — the OS arbitrates, no
+ * Locking is a sibling `<board>.lock` file created with `wx` (exclusive create - the OS arbitrates, no
  * library needed). The lock body records when it was taken; a lock older than `lockTtlMs` belongs to a
  * writer that died inside its critical section and is taken over. The take-over re-reads the lock and
  * only unlinks the exact file it measured, so it cannot remove a fresh lock written after the look.
@@ -262,7 +262,7 @@ interface BunSqliteDatabase {
   close(): void;
 }
 
-/** SQLITE_BUSY / SQLITE_LOCKED from either driver — contention to replay, unlike a change's own error. */
+/** SQLITE_BUSY / SQLITE_LOCKED from either driver - contention to replay, unlike a change's own error. */
 function isSqliteBusy(error: unknown): boolean {
   const candidate = error as { code?: unknown; errcode?: unknown; message?: unknown };
   return (
@@ -302,7 +302,7 @@ function openSqlite(dbPath: string): SqliteDriver {
       close: () => database.close(),
     };
   }
-  // A file that is not a database fails here — close the fresh handle before surfacing, or the file
+  // A file that is not a database fails here - close the fresh handle before surfacing, or the file
   // stays locked and the caller cannot even clean up around it.
   try {
     driver.exec("PRAGMA busy_timeout = 5000");
@@ -316,7 +316,7 @@ function openSqlite(dbPath: string): SqliteDriver {
 
 /**
  * SQLite-backed state behind the same seam: the whole document is one row, and every mutation is a
- * `BEGIN IMMEDIATE` transaction — one writer at a time without a lock file, and a writer that dies
+ * `BEGIN IMMEDIATE` transaction - one writer at a time without a lock file, and a writer that dies
  * mid-transaction is rolled back by the engine on the next open. Connections are opened per operation,
  * so a long-lived board never pins the file (Windows cleanup and log rotation thank us).
  */
@@ -373,7 +373,7 @@ export class SqliteStateStore implements StateStore {
     const raw = row === undefined ? undefined : String(row.body ?? "");
     const parsed = parseSlot(raw);
     if (raw !== undefined && parsed === undefined) {
-      // Unparseable state is quarantined aside and the row dropped — same contract as the file store.
+      // Unparseable state is quarantined aside and the row dropped - same contract as the file store.
       try {
         fs.writeFileSync(`${this.dbPath}.corrupt-${Date.now()}`, raw, "utf-8");
       } catch {

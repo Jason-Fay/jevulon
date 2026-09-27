@@ -49,7 +49,7 @@ export interface SupervisorState {
 
 /**
  * Pre-validated evidence envelope (deferred dogfooding finding #2): JSON text riding the existing
- * `evidence` string field — `{ kind: "token", issuedBy, scope, digest, summary }`, where `digest` is
+ * `evidence` string field - `{ kind: "token", issuedBy, scope, digest, summary }`, where `digest` is
  * the issuer's sha256 over the claimed `summary`. A wire shape only: nothing about it is exported
  * and no server/validate surface changes with it.
  */
@@ -62,7 +62,7 @@ interface EvidenceToken {
 /**
  * Parses and authenticates an evidence envelope. Advisory-strict: anything that is not a well-formed
  * token whose digest binds the claimed summary yields `undefined`, leaving the evidence to the
- * calibrated gate exactly as a plain string report — never weaker.
+ * calibrated gate exactly as a plain string report - never weaker.
  */
 function parseEvidenceToken(evidence: string): EvidenceToken | undefined {
   let parsed: unknown;
@@ -212,7 +212,7 @@ export class SwarmSupervisor {
   }
 
   private handleNoDecision(base: SupervisorState, escalatedJobs: Job[]): SupervisorState {
-    // "No decision" means nothing is dispatchable — running jobs may still be in flight, and the
+    // "No decision" means nothing is dispatchable - running jobs may still be in flight, and the
     // completion contract says isComplete only when no pending/wounded/running work remains.
     const running = this.board.getSnapshot().jobs.filter((j) => j.status === "running");
     if (running.length > 0) {
@@ -349,8 +349,8 @@ export class SwarmSupervisor {
 
   /**
    * Runs the completion gate and acts on it. A pre-validated evidence envelope (deferred dogfooding
-   * finding #2) is honored as verified-by-issuer — S3.1 heal semantics apply and the issuer is
-   * credited on the completion event — while everything else, plain string evidence included, runs
+   * finding #2) is honored as verified-by-issuer - S3.1 heal semantics apply and the issuer is
+   * credited on the completion event - while everything else, plain string evidence included, runs
    * the calibrated gate (Exp 83) exactly as before: green completes the job (healing a wounded/
    * pending one to `done`), red releases the worker and requeues the job (or escalates it when
    * retries are exhausted).
@@ -365,7 +365,7 @@ export class SwarmSupervisor {
     }
 
     // Advisory-strict envelope check: honored only when the digest binds the claimed summary, the
-    // scope names this job, and the deterministic policy floor has not block-flagged the run — the
+    // scope names this job, and the deterministic policy floor has not block-flagged the run - the
     // floor stays supreme, so a token can never bless a destructive run. Anything else falls
     // through to the calibrated gate below, exactly as plain string evidence: never weaker.
     const token = parseEvidenceToken(evidence);
@@ -378,7 +378,7 @@ export class SwarmSupervisor {
 
     if (claimed) {
       const claim = claimed.summary.length > 200 ? `${claimed.summary.slice(0, 200)}…` : claimed.summary;
-      // Verified-pending-integrator: terminal truth with the S3.1 heal. No gate counters move here —
+      // Verified-pending-integrator: terminal truth with the S3.1 heal. No gate counters move here  - 
       // the token is pre-validated by its issuer, not a calibrated-gate verdict, so it must not feed
       // the calibration loop that reads gatesGreen/gatesRed.
       const jobStatus = this.board.completeJob(jobId, evidence, { verified: true, verifiedBy: claimed.issuedBy })
@@ -521,7 +521,7 @@ export class SwarmSupervisor {
 
   /**
    * Builds a viewer-ready replay artifact: the run script, the board state it ended on, and the
-   * decision hash — scrubbed and integrity-hashed for the hosted replay viewer.
+   * decision hash - scrubbed and integrity-hashed for the hosted replay viewer.
    */
   public exportRunArtifact(options: { projectId?: string; scrubber?: (text: string) => string } = {}): RunArtifact {
     return buildRunArtifact({

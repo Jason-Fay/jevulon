@@ -1,7 +1,7 @@
 /**
  * Calibration profile: the server-side loop's output (usage in → adjusted thresholds out).
  * Profiles are versioned so clients apply each revision exactly once, and every knob is clamped
- * to client-side bounds — a bad or hostile profile can never widen blast radius.
+ * to client-side bounds - a bad or hostile profile can never widen blast radius.
  */
 
 import { validateMenuHints } from "./dispatch.js";
@@ -90,7 +90,7 @@ export function parseCalibrationProfile(raw: unknown): CalibrationProfile | unde
 
 /**
  * Clamps every knob into its safety bounds, reporting what had to be bounded. A hostile `menuHints`
- * set is rejected as a unit here (reported in `rejected`) — hints may only reorder or filter the
+ * set is rejected as a unit here (reported in `rejected`) - hints may only reorder or filter the
  * dispatch menu, never widen it, so anything that fails validation never reaches a menu.
  */
 export function clampProfile(profile: CalibrationProfile): { profile: CalibrationProfile; clamped: string[]; rejected: string[] } {

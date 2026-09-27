@@ -105,7 +105,7 @@ export class Blackboard {
 
   /**
    * Worker Death & Anti-Thrashing Circuit Breaker (Exp 75 & Exp 83).
-   * Every job still attributed to the dead worker is wounded — not just the last one it was handed —
+   * Every job still attributed to the dead worker is wounded - not just the last one it was handed  - 
    * so double-booked or hydrated boards cannot strand work invisibly.
    */
   public async markWorkerDeath(workerId: string, reason = "Process died"): Promise<void> {
@@ -274,7 +274,7 @@ export class Blackboard {
   /**
    * Dispatches a pending/wounded job to an idle worker.
    * Returns false (and logs a dispatch_rejected event) instead of corrupting the board when the
-   * transition is illegal — a completed job, a busy worker, a dead worker.
+   * transition is illegal - a completed job, a busy worker, a dead worker.
    */
   public assign(jobId: string, workerId: string): boolean {
     if (!jobId || !workerId || typeof jobId !== "string" || typeof workerId !== "string") return false;
@@ -345,7 +345,7 @@ export class Blackboard {
    * A gate-verified completion (`verified: true`) is terminal truth: it also heals a wounded/pending
    * job to `done`, so no later plan wave can re-dispatch it. Unverified completion keeps the
    * running-only guard. `verifiedBy` names the issuer of a pre-validated evidence token and is
-   * recorded on the completion event for audit — only a verified completion may carry issuer credit.
+   * recorded on the completion event for audit - only a verified completion may carry issuer credit.
    */
   public completeJob(jobId: string, evidence: string, options: { verified?: boolean; verifiedBy?: string } = {}): boolean {
     const job = this.jobs.get(jobId);

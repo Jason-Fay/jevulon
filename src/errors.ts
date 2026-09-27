@@ -1,6 +1,6 @@
 /**
  * Typed error surface for Swarm Sentinel.
- * Safety-critical paths fail closed with an explicit, catchable error — never silently.
+ * Safety-critical paths fail closed with an explicit, catchable error - never silently.
  */
 
 export class MissingCredentialError extends Error {

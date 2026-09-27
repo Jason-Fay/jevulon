@@ -2,13 +2,13 @@
  * Dependency-free OTLP/JSON telemetry sink (SS-SC-58/59).
  *
  * Wire it as a `TelemetryCollector`'s `sink` and it turns each flushed batch into an
- * OTLP/JSON `ExportLogsServiceRequest` body (proto3 JSON mapping — int64 fields are decimal
+ * OTLP/JSON `ExportLogsServiceRequest` body (proto3 JSON mapping - int64 fields are decimal
  * strings) and hands the serialized request to an injected transport. Without an injected
  * transport, an OTLP/HTTP endpoint `url` gets a plain `fetch` POST that fails closed on non-2xx.
  *
  * Scrubbing is re-applied at the export boundary: every string crossing the wire passes the shared
  * bounded pattern set again (the markers are idempotent), so the wire cannot leak even if an event
- * was built outside `TelemetryCollector.record`. Nothing is ever persisted to disk here — and a
+ * was built outside `TelemetryCollector.record`. Nothing is ever persisted to disk here - and a
  * `zeroRetention` exporter refuses to serialize or send at all, matching the collector's
  * "evaluate in RAM, no disk storage" toggle end-to-end.
  */
@@ -19,7 +19,7 @@ import type { TelemetryEvent } from "./telemetry.js";
 export interface OtlpAnyValue {
   stringValue?: string;
   boolValue?: boolean;
-  /** int64 — decimal string per the proto3 JSON mapping. */
+  /** int64 - decimal string per the proto3 JSON mapping. */
   intValue?: string;
   doubleValue?: number;
   arrayValue?: { values: OtlpAnyValue[] };
@@ -159,7 +159,7 @@ function toLogRecord(event: TelemetryEvent): OtlpLogRecord {
 
 /**
  * Builds the OTLP/JSON `ExportLogsServiceRequest` payload for a batch of telemetry events.
- * Pure: no I/O, no persistence — the only sink of secrets is `scrubSecrets`.
+ * Pure: no I/O, no persistence - the only sink of secrets is `scrubSecrets`.
  */
 export function buildOtlpLogsPayload(
   events: TelemetryEvent[],

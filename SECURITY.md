@@ -8,7 +8,7 @@
 
 ## Reporting a vulnerability
 
-Report privately — please do not open a public issue for a security problem. Use GitHub private
+Report privately - please do not open a public issue for a security problem. Use GitHub private
 vulnerability reporting on this repository (Security tab → Report a vulnerability). Include a minimal
 reproduction and the version.
 
@@ -20,7 +20,7 @@ Read this before deploying the shield anywhere near real credentials.
 
 - **The shield is pre-flight policy, not a sandbox.** `sentinel_shield_inspect` returns a verdict; the
   calling agent must choose to obey it. A verdict of `block` is a policy statement, not a kernel
-  guarantee — nothing in this package can stop a process that ignores it.
+  guarantee - nothing in this package can stop a process that ignores it.
 - **A deterministic floor backs every verdict.** Offline rules (the 58-case corpus is their contract) run
   before the model, and the model may only *tighten* their verdict. A model that answers "allow" to
   `rm -rf /`, a fork bomb, or `shutdown` cannot make the shield allow it, and calibration profiles
@@ -35,21 +35,21 @@ Read this before deploying the shield anywhere near real credentials.
   confirmation (treat "always allow" toggles as disabling the gate). Attribution is recorded where the
   host provides it: `requestedBy` (the gated agent's identity) is stamped on every escalation at
   creation and `approvedBy` on every decision (an unattributed decision records `unattributed`), and
-  the store refuses self-approval — a decision attributed to the identity that requested the
+  the store refuses self-approval - a decision attributed to the identity that requested the
   escalation is rejected ("the gated agent cannot authorize itself"). Approvals remain single-use,
   bound to the canonical fingerprint of the exact payload, and expiring (default 15 minutes);
   a `block` verdict can never be approved.
 - **Simulation/offline never reaches the network; live mode sends the inspected text to the JEV
   endpoint.** In live mode the action text and its arguments (and any blackboard state being evaluated)
-  leave the machine for scoring — that is the product's design, and the floor reduces the surface by
+  leave the machine for scoring - that is the product's design, and the floor reduces the surface by
   short-circuiting blocks. Use `--offline` where even that is unacceptable, and never put credentials in
   commands where the endpoints cannot be trusted with them.
 - **The offline classifier is a heuristic with a documented corpus.** Coverage is specified by the
   58-case Guard Gauntlet (`bun run bench`, simulation and live both exact today); novel natural-language
-  intent and improvisation are out of reach by construction. Live-model behaviour is sampled — the floor
+  intent and improvisation are out of reach by construction. Live-model behaviour is sampled - the floor
   guarantees the corpus class, not the model's judgement beyond it.
 - **Do not treat the safety defaults as a substitute for least privilege.** Run agents with the
-  filesystem, network, and credential access you would grant a cautious contractor — no more.
+  filesystem, network, and credential access you would grant a cautious contractor - no more.
 
 ## Data handling
 

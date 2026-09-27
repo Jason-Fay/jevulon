@@ -18,13 +18,13 @@ export interface UsageCounters {
   gatesGreen: number;
   gatesRed: number;
   routings: number;
-  /** Every pre-flight inspection, whatever the verdict — the adoption signal for safety tooling. */
+  /** Every pre-flight inspection, whatever the verdict - the adoption signal for safety tooling. */
   shieldInspections: number;
   /** Every oversight trace evaluation. */
   oversightEvaluations: number;
   /** Coordination: presence reads, checkpoints, claims, and directive traffic (measured, never billed). */
   presenceChecks: number;
-  /** Claims that discovered another agent already holding the same path — the collision signal. */
+  /** Claims that discovered another agent already holding the same path - the collision signal. */
   claimConflicts: number;
   /** Directives issued to agents, and directives they acknowledged. */
   directivesIssued: number;
@@ -140,7 +140,7 @@ export interface UsageReport {
   window: { createdAt: number; updatedAt: number };
   counters: UsageCounters;
   /**
-   * decisions + routings — the dispatch-class unit hosted tiers meter.
+   * decisions + routings - the dispatch-class unit hosted tiers meter.
    * Safety checks (shield inspections, oversight evaluations) are measured in `counters` and
    * summarised in `safetyChecks`, deliberately NOT billed by default: pricing them would punish the
    * exact behaviour safety tooling should encourage.
@@ -150,7 +150,7 @@ export interface UsageReport {
   safetyChecks: number;
   /**
    * Aggregate coordination volume: presence reads/checkpoints plus directive traffic. Like safety
-   * checks, this is measured and deliberately outside the billable unit — it is the signal that tells
+   * checks, this is measured and deliberately outside the billable unit - it is the signal that tells
    * you whether the multi-agent habit is forming at all.
    */
   coordinationChecks: number;

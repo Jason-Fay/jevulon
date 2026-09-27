@@ -50,7 +50,7 @@ export function resolveLaunchMode(options: LaunchOptions, credential: string): L
       ok: true,
       simulation: true,
       notices: options.offline
-        ? ["[jvii] OFFLINE mode: zero egress — verdicts come from the deterministic policy floor, no API calls.\n"]
+        ? ["[jvii] OFFLINE mode: zero egress - verdicts come from the deterministic policy floor, no API calls.\n"]
         : [],
     };
   }
@@ -61,7 +61,7 @@ export function resolveLaunchMode(options: LaunchOptions, credential: string): L
     ok: true,
     simulation: true,
     notices: [
-      "[jvii] no credential found — running in SIMULATION (deterministic, no API calls). " +
+      "[jvii] no credential found - running in SIMULATION (deterministic, no API calls). " +
         "Set TYPESAFE_API_KEY for live evaluation, or pass --simulation to silence this notice.\n",
     ],
   };

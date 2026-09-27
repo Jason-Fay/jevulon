@@ -73,7 +73,7 @@ export function classifySimulatedAction(text: string): SimulatedRisk {
 /**
  * The deterministic policy floor, usable on its own (zero egress) or as a veto over a live model.
  * Evaluation order: obfuscation decoding, destructive rules, structured tool-call rules, unjudgeable
- * indirection in destructive positions, ambiguity rules — the first match wins and names itself.
+ * indirection in destructive positions, ambiguity rules - the first match wins and names itself.
  */
 export function classifyOfflinePolicy(state: unknown): OfflinePolicyVerdict {
   const { destructiveRule, ambiguousRule } = matchOfflinePolicy(flattenStateText(state));
@@ -118,7 +118,7 @@ function matchOfflinePolicy(text: string): { destructiveRule?: string; ambiguous
   if (toolRule !== undefined) return { destructiveRule: toolRule };
 
   // Unresolvable indirection in a destructive position escalates to a human before any ambiguity
-  // rule may soften it — never allow, and never execute the substitution to find out what it runs.
+  // rule may soften it - never allow, and never execute the substitution to find out what it runs.
   const unjudgeable = matchUnjudgeableRule(resolved);
   if (unjudgeable !== undefined) return { ambiguousRule: unjudgeable };
 
@@ -142,7 +142,7 @@ function matchDestructiveToolCall(text: string): string | undefined {
  * folding (fullwidth and styled-homoglyph spellings judge as their ASCII intent), `${IFS}`/`$IFS`
  * word splitting, literal tabs, and backslash-newline line continuations. Rules then match by
  * resolved intent rather than obfuscated spelling. Every decode step re-enters this chain, so
- * decoded payloads fold exactly like raw text. Deliberately bounded — residual limits (`$(…)`
+ * decoded payloads fold exactly like raw text. Deliberately bounded - residual limits (`$(…)`
  * command substitution and generic `$VAR`/`%VAR%` indirection) are not resolved; where they leave a
  * destructive position unjudgeable they escalate via `matchUnjudgeableRule` instead of guessing.
  */

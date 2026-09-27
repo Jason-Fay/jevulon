@@ -1,7 +1,7 @@
 /**
  * Runtime validation for MCP tool arguments.
  * MCP input is untrusted JSON: nothing reaches a handler without shape checking, and a
- * wrong-typed field is an error — never a truthiness coercion (a string "false" is not approval).
+ * wrong-typed field is an error - never a truthiness coercion (a string "false" is not approval).
  */
 
 export class ToolInputError extends Error {
@@ -169,7 +169,7 @@ export interface PresenceToolArgs {
   /** Repository-relative paths to read, claim, or release. */
   paths?: string[];
   mode?: "edit" | "read";
-  /** Why the agent is in these paths — travels to every other agent that reads the board. */
+  /** Why the agent is in these paths - travels to every other agent that reads the board. */
   note?: string;
   /** Claim, directive, and signal lifetime in minutes (max 1440); signals default to 15. */
   ttlMinutes?: number;
@@ -182,7 +182,7 @@ export interface PresenceToolArgs {
   target?: string;
   /** Who issued a directive (a human or an agent id). */
   issuedBy?: string;
-  /** The reason a directive was issued — the agent inherits it. */
+  /** The reason a directive was issued - the agent inherits it. */
   rationale?: string;
   /** Named signal key (action: signal). */
   key?: string;
