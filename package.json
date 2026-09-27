@@ -1,0 +1,70 @@
+{
+  "name": "jevulon",
+  "version": "0.1.0",
+  "description": "JEVULON VII (JVII): Deterministic, self-healing multi-agent orchestration and safety oversight; JEV-compatible decision engine (BYOK)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "jevulon": "./dist/bin/mcp.js",
+    "jvii": "./dist/bin/mcp.js",
+    "jvii-mcp": "./dist/bin/mcp.js",
+    "jvii-bridge": "./dist/bin/bridge.js",
+    "swarm-sentinel-mcp": "./dist/bin/mcp.js",
+    "sentinel-mcp": "./dist/bin/mcp.js",
+    "swarm-sentinel-bridge": "./dist/bin/bridge.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "SECURITY.md"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc",
+    "typecheck": "tsc -p tsconfig.check.json",
+    "verify": "bun run typecheck && bun test --timeout 30000",
+    "test": "bun test --timeout 30000",
+    "demo": "bun run examples/langgraph-integration.ts",
+    "demo:mcp": "bun run examples/mcp-demo.ts",
+    "demo:swarm": "bun run examples/swarm-demo.ts",
+    "gateway": "bun run examples/calibration-gateway.ts",
+    "replay": "bun run examples/replay-artifact.ts",
+    "bench": "bun run scripts/bench.ts",
+    "sieve": "bun run scripts/sieve.ts",
+    "check:pack": "node scripts/check-pack.mjs",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "@langchain/core": "^0.3.40",
+    "@langchain/langgraph": "^0.2.55",
+    "@types/bun": "^1.4.2",
+    "@types/node": "^22.13.9",
+    "typescript": "^5.8.2"
+  },
+  "keywords": [
+    "multi-agent",
+    "swarm",
+    "langgraph",
+    "orchestration",
+    "jev-compatible",
+    "jev",
+    "safety",
+    "oversight"
+  ],
+  "author": "MetaWave",
+  "license": "MIT"
+}
