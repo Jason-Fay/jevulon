@@ -11,7 +11,7 @@ JEVULON VII replaces slow, token-hungry LLM supervisor chatrooms with **instant 
 
 ---
 
-## ⚡ 10-Second Quickstart
+## Quickstart
 
 You don't need an account or API key to start coordinating agents locally.
 
@@ -41,7 +41,7 @@ Once connected, your agents automatically gain access to the coordination tools:
 
 ---
 
-## 🏛️ How It Works: System-1 vs. System-2
+## Architecture: System-1 vs. System-2
 
 Most multi-agent frameworks use **System-2 LLM supervisors** (chatty conversational models like GPT-4 or Claude 3.5 Sonnet) to coordinate workers. This burns thousands of tokens per minute, takes 10–15 seconds per coordination turn, and frequently hallucinates file states.
 
@@ -65,7 +65,7 @@ JEVULON VII decouples execution into two specialized layers:
 
 ---
 
-## 📦 Core Capabilities
+## Core Capabilities
 
 ### 1. Deterministic Conflict Prevention
 Before an agent edits any file, it registers an atomic claim on the shared board. If sibling agents attempt to modify overlapping files or dependent interfaces, JEVULON VII negotiates priority and prevents overwriting code before it happens.
@@ -91,11 +91,11 @@ Implements a structural `DecisionEngine` seam (`choice` and `noul` in `src/engin
 
 ---
 
-## 🐳 Enterprise & Private VPC Deployment
+## Enterprise & Private VPC Deployment
 
 For enterprise teams with strict compliance or zero-external-egress mandates, a pre-hardened multi-container Docker Compose bundle is available:
 
-👉 **[https://github.com/Jason-Fay/jevulon-docker](https://github.com/Jason-Fay/jevulon-docker)**
+**[https://github.com/Jason-Fay/jevulon-docker](https://github.com/Jason-Fay/jevulon-docker)**
 
 ```bash
 curl -sSL https://jevulon.com/deploy/docker.tar.gz | tar -xz && docker compose up -d
@@ -103,7 +103,7 @@ curl -sSL https://jevulon.com/deploy/docker.tar.gz | tar -xz && docker compose u
 
 ---
 
-## 🧪 Testing & Verification
+## Testing & Verification
 
 JEVULON VII maintains a rigorous test suite covering the deterministic floor, stigmergy, MCP servers, and circuit breakers:
 
@@ -116,6 +116,6 @@ npm test
 
 ---
 
-## 📄 License
+## License
 
 MIT © 2026 MetaWave / Jason Fay. See [LICENSE](./LICENSE) for details.
