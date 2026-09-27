@@ -5,9 +5,11 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue.svg?style=flat-square)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18-amber.svg?style=flat-square)](https://nodejs.org/)
 
-**The deterministic, self-healing control layer for parallel AI coding agents.**
+### Run coding agents in true parallel. Faster, cheaper, zero quality loss.
 
-JEVULON VII replaces slow, token-hungry LLM supervisor chatrooms with **instant sub-second System-1 decision gates** and a **shared stigmergic coordination whiteboard** (`board.json`). Run Claude Code, Cursor, Codex, and LangGraph agents in true parallel without merge collisions or file overwrites.
+Normal multi-agent setups just open multiple terminal tabs at once — burning thousands of tokens arguing about who does what and constantly overwriting each other's code.
+
+**JEVULON VII is the first true parallel framework for AI coding agents.** By combining instant System-1 task routing with live whiteboard file locking (`board.json`), your **Claude Code**, **Cursor**, **Codex**, and **LangGraph** agents work in true parallel — from 2 agents to a full swarm — with zero file overwrites and zero wasted supervisor chat tokens.
 
 ---
 
